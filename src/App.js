@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from "react";
-
+import { Linking } from 'react-native';
 import {
   SafeAreaView,
   View,
@@ -15,9 +15,9 @@ export default function App() {
   const [repositories, setRepositories] = useState([])
 
   useEffect(()=>{
-    api.get('/repositories').then(response => (
-      setRepositories(response.data)
-    ))
+    api.get('/repositories').then(response => {
+      return setRepositories(response.data)
+    })
     
   }, [])
 
@@ -47,11 +47,18 @@ export default function App() {
               <Text key={repository.id} style={styles.repository}>{repository.title}</Text>
 
               <View style={styles.techsContainer}>
-                {repository.techs.map(technology => (
-                  <Text key={technology} style={styles.tech}>
-                    {technology}
+                  <Text key={repository.techs} style={styles.tech}>
+                    {repository.techs}
                   </Text>
-                ))}
+              </View>
+
+              <View>
+                  <Text 
+                    style={{color: 'blue'}} 
+                    onPress={() => Linking.openURL(repository.url)} 
+                  >
+                    {repository.url}
+                  </Text>
               </View>
 
               <View style={styles.likesContainer}>
